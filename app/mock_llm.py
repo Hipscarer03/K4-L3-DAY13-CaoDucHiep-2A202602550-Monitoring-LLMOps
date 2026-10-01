@@ -5,6 +5,7 @@ import time
 from dataclasses import dataclass
 
 from .incidents import STATE
+from .tracing import get_langfuse_client, tracing_enabled
 
 
 @dataclass
@@ -26,6 +27,41 @@ class FakeLLM:
         self.model = model
 
     def generate(self, prompt: str) -> FakeResponse:
+        """Generate a response from the mock LLM.
+
+        Instrumented as a Langfuse 'generation' observation, capturing:
+        - Model name for model comparison / filtering
+        - Input prompt and output text
+        - Token usage (input_tokens, output_tokens) for cost calculation
+        - Time-to-first-token (TTFT) as metadata
+        """
+        langfuse = get_langfuse_client()
+
+        if tracing_enabled():
+            with langfuse.start_as_current_observation(
+                as_type="generation",
+                name="llm-generation",
+                model=self.model,
+                input={"prompt": prompt},
+            ) as generation:
+                response = self._do_generate(prompt)
+                generation.update(
+                    output=response.text,
+                    usage_details={
+                        "input": response.usage.input_tokens,
+                        "output": response.usage.output_tokens,
+                    },
+                    metadata={
+                        "ttft_ms": response.ttft_ms,
+                        "model": self.model,
+                    },
+                )
+                return response
+        else:
+            return self._do_generate(prompt)
+
+    def _do_generate(self, prompt: str) -> FakeResponse:
+        """Core generation logic, separated for clean instrumentation."""
         started = time.perf_counter()
         time.sleep(0.05)  # mô phỏng thời điểm token đầu tiên sẵn sàng
         ttft_ms = int((time.perf_counter() - started) * 1000)

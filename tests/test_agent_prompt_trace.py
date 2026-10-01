@@ -54,7 +54,9 @@ def test_agent_records_prompt_version_with_v4_observation_api(monkeypatch) -> No
         correlation_id="req-12345678",
     )
 
-    span_update = client.span_updates[-1]
+    # Find the span update that contains the prompt metadata (there are now
+    # multiple update_current_span calls for explicit input, metadata, and output)
+    span_update = next(u for u in client.span_updates if "metadata" in u and "prompt_name" in u.get("metadata", {}))
     assert span_update["metadata"] == {
         "doc_count": 1,
         "query_preview": "Explain traces",

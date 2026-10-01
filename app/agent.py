@@ -9,7 +9,14 @@ from .mock_llm import FakeLLM
 from .mock_rag import retrieve
 from .pii import hash_user_id, summarize_text
 from .prompt_management import resolve_prompt
-from .tracing import get_langfuse_client, observe, propagate_attributes, tracing_enabled
+from .tracing import (
+    flush_langfuse,
+    get_langfuse_client,
+    observe,
+    propagate_attributes,
+    score_current_trace,
+    tracing_enabled,
+)
 
 
 @dataclass
@@ -50,8 +57,16 @@ class LabAgent:
                 "correlation_id": correlation_id,
             },
         ):
+            # Set explicit trace input (only user message, not all args) — best practice
+            langfuse_client.update_current_span(
+                input={"message": summarize_text(message), "feature": feature},
+            )
+
             started = time.perf_counter()
+
+            # retrieve() is now instrumented as a 'retriever' child observation
             docs = retrieve(message)
+
             prompt = resolve_prompt(
                 langfuse_client,
                 feature=feature,
@@ -71,13 +86,31 @@ class LabAgent:
                 },
                 version=prompt.version,
             )
-            # TODO (CP2): instrument retrieve() and FakeLLM.generate() as child
-            # observations. The nested generation must receive prompt, usage and cost.
+
+            # FakeLLM.generate() is now instrumented as a 'generation' child observation
+            # capturing model, usage, and cost data
             with propagate_attributes(prompt=prompt.managed_prompt):
                 response = self.llm.generate(prompt.text)
+
             quality_score = self._heuristic_quality(message, response.text, docs)
             latency_ms = int((time.perf_counter() - started) * 1000)
             cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
+
+            # Set explicit trace output — best practice for UI readability
+            langfuse_client.update_current_span(
+                output={
+                    "answer_preview": summarize_text(response.text),
+                    "latency_ms": latency_ms,
+                    "quality_score": quality_score,
+                },
+            )
+
+            # Report quality score on the current trace for evaluation
+            score_current_trace(
+                name="quality-heuristic",
+                value=quality_score,
+                comment=f"Heuristic quality score for feature={feature}",
+            )
 
         metrics.record_request(
             latency_ms=latency_ms,
