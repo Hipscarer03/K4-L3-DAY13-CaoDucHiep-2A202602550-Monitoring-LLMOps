@@ -1,0 +1,155 @@
+[
+  {
+    "batch": "baseline",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-7fb5be72",
+    "latency_ms": 1121,
+    "quality": 0.9,
+    "cost": 0.001851
+  },
+  {
+    "batch": "baseline",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-98648462",
+    "latency_ms": 151,
+    "quality": 0.9,
+    "cost": 0.001665
+  },
+  {
+    "batch": "baseline",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-a37f2664",
+    "latency_ms": 151,
+    "quality": 0.8,
+    "cost": 0.002829
+  },
+  {
+    "batch": "baseline",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-eeed3068",
+    "latency_ms": 151,
+    "quality": 0.9,
+    "cost": 0.002688
+  },
+  {
+    "batch": "baseline",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-85c994b1",
+    "latency_ms": 151,
+    "quality": 0.8,
+    "cost": 0.002319
+  },
+  {
+    "batch": "candidate",
+    "label": "candidate",
+    "prompt_ver": "2",
+    "corr_id": "req-59a3c1b2",
+    "latency_ms": 733,
+    "quality": 0.8,
+    "cost": 0.001881
+  },
+  {
+    "batch": "candidate",
+    "label": "candidate",
+    "prompt_ver": "2",
+    "corr_id": "req-0301daa1",
+    "latency_ms": 151,
+    "quality": 0.8,
+    "cost": 0.001401
+  },
+  {
+    "batch": "candidate",
+    "label": "candidate",
+    "prompt_ver": "2",
+    "corr_id": "req-c3dcf799",
+    "latency_ms": 152,
+    "quality": 0.8,
+    "cost": 0.001596
+  },
+  {
+    "batch": "candidate",
+    "label": "candidate",
+    "prompt_ver": "2",
+    "corr_id": "req-9707b3b1",
+    "latency_ms": 151,
+    "quality": 0.8,
+    "cost": 0.001488
+  },
+  {
+    "batch": "candidate",
+    "label": "candidate",
+    "prompt_ver": "2",
+    "corr_id": "req-079196c0",
+    "latency_ms": 152,
+    "quality": 0.8,
+    "cost": 0.002166
+  },
+  {
+    "batch": "challenge_incident",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-db64fd54",
+    "latency_ms": 2653,
+    "quality": 0.8,
+    "cost": 0.002415
+  },
+  {
+    "batch": "challenge_incident",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-199006c9",
+    "latency_ms": 2653,
+    "quality": 0.9,
+    "cost": 0.001782
+  },
+  {
+    "batch": "challenge_incident",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-78eac213",
+    "latency_ms": 2652,
+    "quality": 0.8,
+    "cost": 0.001935
+  },
+  {
+    "batch": "challenge_incident",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-d24f145a",
+    "latency_ms": 2653,
+    "quality": 0.9,
+    "cost": 0.002388
+  },
+  {
+    "batch": "challenge_incident",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-eb9b176d",
+    "latency_ms": 2654,
+    "quality": 0.8,
+    "cost": 0.002295
+  },
+  {
+    "batch": "recovery",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-8924732d",
+    "latency_ms": 152,
+    "quality": 0.8,
+    "cost": 0.002589
+  },
+  {
+    "batch": "recovery",
+    "label": "production",
+    "prompt_ver": "1",
+    "corr_id": "req-f4f94f9a",
+    "latency_ms": 152,
+    "quality": 0.8,
+    "cost": 0.001503
+  }
+]
